@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h3 class="my-4">Izmena mojih podataka</h3>
+    <form action="{{ url_for('moj_profil_izmena') }}" method="POST" enctype="multipart/form-data">
+        <div class="form-group mb-3">
+            <label for="broj_telefona">Broj telefona</label>
+            <input type="text" class="form-control" id="broj_telefona" name="broj_telefona" value="{{ zaposleni.broj_telefona }}">
+        </div>
+        <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ zaposleni.email }}">
+        </div>
+        <div class="form-group mb-3">
+            <label for="bracni_status">Bračni status</label>
+            <select id="bracni_status" name="bracni_status" class="form-control">
+                <option value="">--Izaberi--</option>
+                <option value="neozenjen_neudata" {% if zaposleni.bracni_status=="neozenjen_neudata" %} selected {% endif %}>Neoženjen/Neudata</option>
+                <option value="ozenjen_udata" {% if zaposleni.bracni_status=="ozenjen_udata" %} selected {% endif %}>Oženjen/Udata</option>
+                <option value="razveden_a" {% if zaposleni.bracni_status=="razveden_a" %} selected {% endif %}>Razveden/a</option>
+                <option value="udovac_udovica" {% if zaposleni.bracni_status=="udovac_udovica" %} selected {% endif %}>Udovac/Udovica</option>
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label for="slika">Slika</label><br>
+            {% if zaposleni.slika %}
+            <img src="/static/uploads/{{ zaposleni.slika }}" style="height: 100px; width: 100px; border-radius: 100px; object-fit: cover;" class="mb-2"><br>
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="obrisi_sliku" name="obrisi_sliku">
+                <label class="form-check-label" for="obrisi_sliku">Ukloni trenutnu sliku</label>
+            </div>
+            {% endif %}
+            <input type="file" accept="image/*" class="form-control" id="slika" name="slika">
+        </div>
+        <button type="submit" class="btn btn-primary">Sačuvaj</button>
+        <a href="{{ url_for('moj_profil') }}" class="btn btn-secondary">Nazad</a>
+    </form>
+</div>
+{% endblock %}

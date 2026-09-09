@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row my-5">
+        <div class="col-md-6">
+            <h3>Moj profil</h3>
+            {% if zaposleni.slika %}
+            <img src="/static/uploads/{{ zaposleni.slika }}" style="height: 150px; width: 150px; border-radius: 150px; object-fit: cover;" class="mb-3"><br>
+            {% endif %}
+            <p><strong>Ime:</strong> {{ zaposleni.ime }}</p>
+            <p><strong>Prezime:</strong> {{ zaposleni.prezime }}</p>
+            <p><strong>Matični broj:</strong> {{ zaposleni.maticni_broj }}</p>
+            <p><strong>Email:</strong> {{ zaposleni.email }}</p>
+            <p><strong>Broj telefona:</strong> {{ zaposleni.broj_telefona }}</p>
+            <p><strong>Bračni status:</strong>
+                {% if zaposleni.bracni_status == "neozenjen_neudata" %}Neoženjen/Neudata
+                {% elif zaposleni.bracni_status == "ozenjen_udata" %}Oženjen/Udata
+                {% elif zaposleni.bracni_status == "razveden_a" %}Razveden/a
+                {% elif zaposleni.bracni_status == "udovac_udovica" %}Udovac/Udovica
+                {% endif %}
+            </p>
+            {% if trenutna_rola == 'zaposleni' %}
+            <p><strong>Ukupno bodova:</strong> {{ zaposleni.ukupno_bodova }}</p>
+            <p><strong>Prosečna ocena:</strong> {{ zaposleni.prosecna_ocena }}</p>
+            {% endif %}
+            <a href="{{ url_for('moj_profil_izmena') }}" class="btn btn-primary mt-2">Izmeni podatke</a>
+            <br>
+            <a href="{{ url_for('promena_lozinke') }}" class="btn btn-secondary mt-2">Promeni lozinku</a>
+        </div>
+    </div>
+
+    {% if trenutna_rola == 'zaposleni' %}
+    <div class="row">
+        <h5>Moje ocene</h5>
+        <a href="{{ url_for('export_mojih_ocena') }}" role="button" class="btn btn-success btn-sm mb-3">Export ocena (.csv)</a>
+        <a href="{{ url_for('export_mojih_ocena_pdf') }}" role="button" class="btn btn-danger btn-sm mb-3">Export ocena (.pdf)</a>
+
+        <form method="GET" action="{{ url_for('moj_profil') }}" class="mb-3">
+            <div class="input-group" style="max-width: 400px;">
+                <input type="text" name="projekat" class="form-control" placeholder="Pretraga po nazivu projekta" value="{{ args.projekat }}">
+                <input type="hidden" name="order_by" value="{{ args.order_by }}">
+                <input type="hidden" name="order_type" value="{{ order_type }}">
+                <button type="submit" class="btn btn-primary">Pretraži</button>
+                <a href="{{ url_for('moj_profil') }}" class="btn btn-secondary">Poništi</a>
+            </div>
+        </form>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <a href="{{ url_for('moj_profil', projekat=args.projekat, order_by='projekat_naziv', order_type=order_type, prethodni_order_by=args.order_by) }}" class="text-dark text-decoration-none">
+                            Projekat
+                            {% if args.order_by == 'projekat_naziv' %}
+                                {% if order_type == 'asc' %}<i class="fas fa-sort-up"></i>{% else %}<i class="fas fa-sort-down"></i>{% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                    <th>
+                        <a href="{{ url_for('moj_profil', projekat=args.projekat, order_by='ocena', order_type=order_type, prethodni_order_by=args.order_by) }}" class="text-dark text-decoration-none">
+                            Ocena
+                            {% if args.order_by == 'ocena' %}
+                                {% if order_type == 'asc' %}<i class="fas fa-sort-up"></i>{% else %}<i class="fas fa-sort-down"></i>{% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                    <th>
+                        <a href="{{ url_for('moj_profil', projekat=args.projekat, order_by='datum', order_type=order_type, prethodni_order_by=args.order_by) }}" class="text-dark text-decoration-none">
+                            Datum
+                            {% if args.order_by == 'datum' %}
+                                {% if order_type == 'asc' %}<i class="fas fa-sort-up"></i>{% else %}<i class="fas fa-sort-down"></i>{% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ocena in ocene %}
+                <tr>
+                    <td>{{ ocena.projekat_naziv }}</td>
+                    <td>{{ ocena.ocena }}</td>
+                    <td>{{ ocena.datum }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

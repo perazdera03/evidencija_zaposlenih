@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h3 class="my-4">Novi projekat</h3>
+    <form action="{{ url_for('projekti_novi') }}" method="POST">
+        <div class="form-group mb-3">
+            <label for="sifra">Šifra</label>
+            <input type="text" class="form-control" id="sifra" name="sifra" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="naziv">Naziv</label>
+            <input type="text" class="form-control" id="naziv" name="naziv" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="bodovi_vrednosti">Bodovi vrednosti</label>
+            <input type="number" class="form-control" id="bodovi_vrednosti" name="bodovi_vrednosti" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="status">Status</label>
+            <select id="status" name="status" class="form-control">
+                <option value="">--Izaberi status--</option>
+                <option value="aktivan">Aktivan</option>
+                <option value="zavrsen">Završen</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Sačuvaj</button>
+    </form>
+</div>
+{% endblock %}

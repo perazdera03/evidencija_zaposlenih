@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row my-5 justify-content-end">
+        {% if trenutna_rola != 'menadzer' %}
+        <a href="{{ url_for('zaposleni_novi') }}" role="button" class="btn btn-primary">Dodaj zaposlenog</a>
+        {% endif %}
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Ime</th>
+                    <th>Prezime</th>
+                    <th>Matični broj</th>
+                    <th>Akcije</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for zaposleni_ in zaposleni %}
+                <tr>
+                    <td>{{ zaposleni_.ime }}</td>
+                    <td>{{ zaposleni_.prezime }}</td>
+                    <td>{{ zaposleni_.maticni_broj }}</td>
+                    <td>
+                    <a href="{{ url_for('zaposleni_detalji', id=zaposleni_.id) }}" role="button" class="text-primary mx-1">
+                    <i class="far fa-eye"></i>
+                    </a>
+                {% if trenutna_rola != 'menadzer' %}
+                    <a href="{{ url_for('zaposleni_izmena', id=zaposleni_.id) }}" role="button" class="text-warning mx-1">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <button type="button" class="text-danger mx-1 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteModal{{ zaposleni_.id }}">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                {% endif %}
+                    </td>
+                </tr>
+                <div class="modal fade" id="deleteModal{{ zaposleni_.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                Da li ste sigurni da želite da obrišete zaposlenog {{ zaposleni_.ime }} {{ zaposleni_.prezime }}?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Odustani</button>
+                                <form action="{{ url_for('zaposleni_brisanje', id=zaposleni_.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-danger">Obriši</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

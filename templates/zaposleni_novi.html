@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h3 class="my-4">Novi zaposleni</h3>
+    <form action="{{ url_for('zaposleni_novi') }}" method="POST" enctype="multipart/form-data">
+        <div class="form-group mb-3">
+            <label for="ime">Ime</label>
+            <input type="text" class="form-control" id="ime" name="ime" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="prezime">Prezime</label>
+            <input type="text" class="form-control" id="prezime" name="prezime" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="maticni_broj">Matični broj</label>
+            <input type="text" class="form-control" id="maticni_broj" name="maticni_broj" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="jmbg">JMBG</label>
+            <input type="text" class="form-control" id="jmbg" name="jmbg" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="datum_rodjenja">Datum rođenja</label>
+            <input type="date" class="form-control" id="datum_rodjenja" name="datum_rodjenja">
+        </div>
+        <div class="form-group mb-3">
+            <label for="broj_telefona">Broj telefona</label>
+            <input type="text" class="form-control" id="broj_telefona" name="broj_telefona">
+        </div>
+        <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="form-group mb-3">
+            <label for="godina_zaposlenja">Godina zaposlenja</label>
+            <input type="number" class="form-control" id="godina_zaposlenja" name="godina_zaposlenja">
+        </div>
+        <div class="form-group mb-3">
+            <label for="bracni_status">Bračni status</label>
+            <select id="bracni_status" name="bracni_status" class="form-control">
+                <option value="">--Izaberi--</option>
+                <option value="neozenjen_neudata">Neoženjen/Neudata</option>
+                <option value="ozenjen_udata">Oženjen/Udata</option>
+                <option value="razveden_a">Razveden/a</option>
+                <option value="udovac_udovica">Udovac/Udovica</option>
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label for="slika">Slika (opciono)</label>
+            <input type="file" accept="image/*" class="form-control" id="slika" name="slika">
+        </div>
+        <button type="submit" class="btn btn-primary">Sačuvaj</button>
+    </form>
+</div>
+{% endblock %}

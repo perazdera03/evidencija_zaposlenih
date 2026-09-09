@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h3 class="my-4">Izmena korisnika</h3>
+    <form action="{{ url_for('korisnici_izmena', id=korisnik.id) }}" method="POST">
+        <div class="form-group mb-3">
+            <label for="ime">Ime</label>
+            <input type="text" class="form-control" id="ime" name="ime" value="{{ korisnik.ime }}" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="prezime">Prezime</label>
+            <input type="text" class="form-control" id="prezime" name="prezime" value="{{ korisnik.prezime }}" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ korisnik.email }}" required>
+        </div>
+       <div class="form-group mb-3">
+            <label for="lozinka">Nova lozinka (ostavi prazno da ne menjaš)</label>
+            <input type="password" class="form-control" id="lozinka" name="lozinka">
+        </div>
+        <div class="form-group mb-3">
+            <label for="rola">Rola</label>
+            <select id="rola" name="rola" class="form-control">
+                <option value="administrator" {% if korisnik.rola=="administrator" %} selected {% endif %}>Administrator</option>
+                <option value="menadzer" {% if korisnik.rola=="menadzer" %} selected {% endif %}>Menadžer</option>
+                <option value="zaposleni" {% if korisnik.rola=="zaposleni" %} selected {% endif %}>Zaposleni</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Sačuvaj</button>
+    </form>
+</div>
+{% endblock %}

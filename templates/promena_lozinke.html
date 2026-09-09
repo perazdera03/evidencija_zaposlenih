@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row my-5">
+        <div class="col-md-6">
+            <h3>Promena lozinke</h3>
+            <p><strong>Ime:</strong> {{ korisnik.ime }}</p>
+            <p><strong>Prezime:</strong> {{ korisnik.prezime }}</p>
+            <p><strong>Email:</strong> {{ korisnik.email }}</p>
+
+            {% if greska %}
+            <div class="alert alert-danger">{{ greska }}</div>
+            {% endif %}
+            {% if poruka %}
+            <div class="alert alert-success">{{ poruka }}</div>
+            {% endif %}
+
+            <form action="{{ url_for('promena_lozinke') }}" method="POST">
+                <div class="form-group mb-3">
+                    <label for="stara_lozinka">Trenutna lozinka</label>
+                    <input type="password" class="form-control" id="stara_lozinka" name="stara_lozinka" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="nova_lozinka">Nova lozinka</label>
+                    <input type="password" class="form-control" id="nova_lozinka" name="nova_lozinka" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Sačuvaj</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row my-5">
+        <div class="col-md-6">
+            {% if zaposleni.slika %}
+            <img src="/static/uploads/{{ zaposleni.slika }}" style="height: 150px; width: 150px; border-radius: 150px; object-fit: cover;" class="mb-3"><br>
+            {% endif %}
+            <p><strong>Ime:</strong> {{ zaposleni.ime }}</p>
+            <p><strong>Prezime:</strong> {{ zaposleni.prezime }}</p>
+            <p><strong>Matični broj:</strong> {{ zaposleni.maticni_broj }}</p>
+            <p><strong>Email:</strong> {{ zaposleni.email }}</p>
+            <p><strong>Bračni status:</strong>
+                {% if zaposleni.bracni_status == "neozenjen_neudata" %}Neoženjen/Neudata
+                {% elif zaposleni.bracni_status == "ozenjen_udata" %}Oženjen/Udata
+                {% elif zaposleni.bracni_status == "razveden_a" %}Razveden/a
+                {% elif zaposleni.bracni_status == "udovac_udovica" %}Udovac/Udovica
+                {% endif %}
+            </p>
+            <p><strong>Ukupno bodova:</strong> {{ zaposleni.ukupno_bodova }}</p>
+            <p><strong>Prosečna ocena:</strong> {{ zaposleni.prosecna_ocena }}</p>
+        </div>
+        {% if trenutna_rola == 'menadzer' %}
+        <div class="col-md-6">
+            <h5>Dodaj ocenu</h5>
+            <form action="{{ url_for('ocena_nova', id=zaposleni.id) }}" method="POST">
+                <div class="form-group mb-3">
+                    <label for="projekat_id">Projekat</label>
+                    <select id="projekat_id" name="projekat_id" class="form-control" required>
+                        <option value="">--Odaberi projekat--</option>
+                        {% for projekat in projekti %}
+                        <option value="{{ projekat.id }}">{{ projekat.naziv }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="ocena">Ocena</label>
+                    <input type="number" min="1" max="5" class="form-control" id="ocena" name="ocena" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="datum">Datum</label>
+                    <input type="date" class="form-control" id="datum" name="datum" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Dodaj ocenu</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Projekat</th>
+                    <th>Ocena</th>
+                    <th>Datum</th>
+                    <th>Akcije</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ocena in ocene %}
+                <tr>
+                    <td>{{ ocena.projekat_naziv }}</td>
+                    <td>{{ ocena.ocena }}</td>
+                    <td>{{ ocena.datum }}</td>
+                    <td>
+                        {% if trenutna_rola == 'menadzer' %}
+                        <form action="{{ url_for('ocena_brisanje', id=ocena.id, zaposleni_id=zaposleni.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="text-danger mx-1 border-0 bg-transparent">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

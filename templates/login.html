@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-4">
+            <h3 class="mb-4">Prijava</h3>
+            <form action="{{ url_for('login') }}" method="POST">
+                <div class="form-group mb-3">
+                    <label for="email">Email adresa</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="lozinka">Lozinka</label>
+                    <input type="password" class="form-control" id="lozinka" name="lozinka" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Prijavi se</button>
+                <a href="{{ url_for('registracija') }}" class="btn btn-link">Nemate nalog? Registrujte se</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
